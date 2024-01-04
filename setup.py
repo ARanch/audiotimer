@@ -10,5 +10,10 @@ setup(
     version='0.2.2',
     packages=find_packages(),
     long_description=long_description,
-    long_description_content_type='text/markdown'
+    long_description_content_type='text/markdown',
+    entry_points={
+        'console_scripts': [
+            'audiotimer=audiotimer.__main__:main'
+        ]
+    },
 )
