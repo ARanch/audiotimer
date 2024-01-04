@@ -1,0 +1,4 @@
+numpy==1.26.3
+PyAudio==0.2.14
+pynput==1.7.6
+six==1.16.0
