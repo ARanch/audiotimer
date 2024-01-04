@@ -13,4 +13,4 @@ run using:
 `python audiotimer`
 
 ## Use case
-The program is intended to be used as a way of testting the battery life of battery powered loudspeakers. Set the speaker to play a pink noise at a certain level, and leave a laptop with the speaker to listen for when it dies out. 
+The program is intended to be used as a way of testing the battery life of battery powered loudspeakers. Set the speaker to play a pink noise at a certain level, and leave a laptop with the speaker to listen for when it dies out. 
