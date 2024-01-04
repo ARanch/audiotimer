@@ -9,6 +9,7 @@ CHANNELS = 1  # Number of audio channels (1 for mono)
 RATE = 44100  # Sampling rate (44.1kHz)
 CHUNK = 1024  # Size of each read from the buffer
 THRESHOLD = 400  # Audio level threshold for detecting sound
+BUFFER_TIME = 3  # Buffer time in seconds
 
 # Initialize PyAudio
 p = pyaudio.PyAudio()
@@ -33,6 +34,7 @@ listener.start()
 
 start_time = None
 audio_detected = False
+buffer_start = None
 
 try:
     while True:
@@ -46,19 +48,22 @@ try:
 
         # Check if the current audio level exceeds the threshold
         if current_level > THRESHOLD:
-            # Start the timer if this is the first time sound is detected
             if not start_time:
                 print("\nAudio detected. Starting timer...")
                 start_time = time.time()
             audio_detected = True
+            buffer_start = None  # Reset buffer timer
         # Check if sound has stopped
-        elif audio_detected and current_level < THRESHOLD:
-            end_time = time.time()
-            break
+        elif audio_detected and (buffer_start is None or time.time() - buffer_start >= BUFFER_TIME):
+            if buffer_start is None:
+                buffer_start = time.time()  # Start buffer timer
+            elif time.time() - buffer_start >= BUFFER_TIME:
+                end_time = time.time()
+                break
 
         # Print the current audio level
         print(f"Current audio level: {current_level}", end='\r')
-        time.sleep(0.1)  # Delay for 0.5 seconds
+        time.sleep(0.1)  # Delay for 0.1 seconds
 
         # Check for keypress to quit early
         if not listener.running and start_time:
