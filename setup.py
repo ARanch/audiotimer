@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='audiotimer',
-    version='0.2.3',
+    version='0.2.4',
     packages=find_packages(),
     long_description=long_description,
     long_description_content_type='text/markdown',
