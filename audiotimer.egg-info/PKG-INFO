@@ -1,7 +1,10 @@
 Metadata-Version: 2.1
 Name: audiotimer
-Version: 0.2.3
+Version: 0.2.6
 Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.26.3
+Requires-Dist: PyAudio>=0.2.14
+Requires-Dist: pynput>=1.7.6
 
 # Audio timer
 Github: https://github.com/ARanch/audiotimer
