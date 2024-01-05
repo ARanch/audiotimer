@@ -5,4 +5,5 @@ audiotimer/__main__.py
 audiotimer.egg-info/PKG-INFO
 audiotimer.egg-info/SOURCES.txt
 audiotimer.egg-info/dependency_links.txt
+audiotimer.egg-info/entry_points.txt
 audiotimer.egg-info/top_level.txt
