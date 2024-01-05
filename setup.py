@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='audiotimer',
-    version='0.2.2',
+    version='0.2.3',
     packages=find_packages(),
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -16,4 +16,9 @@ setup(
             'audiotimer=audiotimer.__main__:main'
         ]
     },
+    install_requires=[
+        'numpy>=1.26.3',
+        'PyAudio>=0.2.14',
+        'pynput>=1.7.6'
+    ]
 )
