@@ -3,7 +3,7 @@ def main():
     import numpy as np
     import time
     from pynput import keyboard
-    from flags import args
+    from .flags import args # . notation ensures import from local package
 
     # Constants
     FORMAT = pyaudio.paInt16

@@ -3,17 +3,20 @@ def main():
     import numpy as np
     import time
     from pynput import keyboard
+    from flags import args
 
     # Constants
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
     RATE = 44100
     CHUNK = 1024
-    THRESHOLD = 1000  # Audio level threshold for detecting sound
+    THRESHOLD = args.threshold  # Audio level threshold for detecting sound. Defaults to 1000.
     MAX_LEVEL = 32768  # Max level for 16-bit audio
-    BUFFER_TIME = 3  # Buffer time in seconds for countdown
+    BUFFER_TIME = args.buffertime  # Buffer time in seconds for countdown
     BAR_LENGTH = 50  # Length of the volume bar
     UPDATE_INTERVAL = 0.1  # Interval for updating the volume bar in seconds
+    
+    # TODO: add pink noise output.
 
     # Initialize PyAudio
     p = pyaudio.PyAudio()
@@ -35,6 +38,9 @@ def main():
 
     def create_volume_bar(level, max_level, bar_length, threshold):
         """Create a graphical representation of the volume level with logarithmic scaling."""
+        # check that level is non negative (can happen on windows 11)
+        if level < 0:
+            level = 0
         # Apply logarithmic scaling
         log_level = math.log1p(level) / math.log1p(max_level)
         log_threshold = math.log1p(threshold) / math.log1p(max_level)
