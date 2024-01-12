@@ -3,15 +3,18 @@ def main():
     import numpy as np
     import time
     from pynput import keyboard
+    from flags import args
+    
+    
 
     # Constants
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
     RATE = 44100
     CHUNK = 1024
-    THRESHOLD = 1000  # Audio level threshold for detecting sound
+    THRESHOLD = args.threshold  # Audio level threshold for detecting sound. Defaults to 1000.
     MAX_LEVEL = 32768  # Max level for 16-bit audio
-    BUFFER_TIME = 3  # Buffer time in seconds for countdown
+    BUFFER_TIME = args.buffertime  # Buffer time in seconds for countdown
     BAR_LENGTH = 50  # Length of the volume bar
     UPDATE_INTERVAL = 0.1  # Interval for updating the volume bar in seconds
 
