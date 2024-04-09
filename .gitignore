@@ -1,4 +1,5 @@
 .env/
+env/
 .history/
 .dist/
 commitnotes.txt
