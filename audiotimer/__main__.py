@@ -2,9 +2,28 @@ def main():
     import pyaudio
     import numpy as np
     import time
+    import math
     from pynput import keyboard
-    from .flags import args # . notation ensures import from local package
+    from slack_ping import Slack
 
+
+
+    # TODO: make more elegant? 
+    if __name__ == "__main__":
+        # import default flag values when run as script
+        from flags import args
+        from slack_ping import Slack
+        from helpers import time_stamp, Configuration
+    else:
+        # import flag values when run as module
+        from .flags import args # . notation ensures import from local package
+        from .slack_ping import Slack
+        from .helpers import time_stamp, Configuration
+
+    # import message client for Slack.
+    slack = Slack() 
+
+    # config = Configuration()
     # Constants
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
@@ -25,6 +44,8 @@ def main():
     stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
 
     print("Listening for audio... Press 'q' to quit early.")
+    test_note = input("Add a note to the test measurement:")
+    slack.post_message(f'Test started at {time_stamp()}')
 
     def on_press(key):
         try:
@@ -34,7 +55,6 @@ def main():
         except AttributeError:
             pass
 
-    import math
 
     def create_volume_bar(level, max_level, bar_length, threshold):
         """Create a graphical representation of the volume level with logarithmic scaling."""
@@ -88,6 +108,7 @@ def main():
                         remaining_time = BUFFER_TIME - (time.time() - buffer_start)
                         if remaining_time <= 0:
                             end_time = time.time()
+                            end_time_stamp = time_stamp() 
                             break
                         countdown_msg = f" - Countdown: {int(remaining_time)}s"
                 else:
@@ -100,12 +121,14 @@ def main():
                 if not start_time:
                     print("\nAudio detected. Starting timer...")
                     start_time = time.time()
+                    start_time_stamp = time_stamp()
                 audio_detected = True
                 buffer_start = None  # Reset buffer timer
 
             # Check for keypress to quit early
             if not listener.running and start_time:
                 end_time = time.time()
+                end_time_stamp = time_stamp()
                 break
     except KeyboardInterrupt:
         end_time = time.time()
@@ -124,10 +147,21 @@ def main():
         minutes, seconds = divmod(remainder, 60)
         formatted_duration = f"{int(hours)}h:{int(minutes):02d}m:{int(seconds):02d}s"
         print(f"\nDuration: {formatted_duration}")
+        slack.post_message(
+            f"Battery test ended at {end_time_stamp}\n"
+            f"Duration was: {formatted_duration}\n"
+            f"Test note: {test_note}"
+            )
+
 
         # Write the duration to a file
         with open("duration.txt", "w") as file:
-            file.write(f"Duration: {formatted_duration}")
+            file.write(
+                f"Duration: {formatted_duration}\n"
+                f"Start time: {start_time_stamp}\n"
+                f"End time: {end_time_stamp}\nq"
+                f"Note: {test_note}"
+                )
     else:
         print("No audio detected.")
 
